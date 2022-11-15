@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CategoriaController;
+use App\Http\Controllers\UsuarioController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -21,3 +23,7 @@ Route::group(["prefix" => "v1/auth"], function(){
     });
 });
 
+Route::group(["middleware" => "auth:sanctum"], function(){
+    Route::apiResource("categoria", CategoriaController::class);
+    Route::apiResource("usuario", UsuarioController::class);
+});
