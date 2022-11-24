@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Categoria;
 use Illuminate\Http\Request;
 // use App\Models\Categoria;
 
@@ -14,7 +15,9 @@ class CategoriaController extends Controller
      */
     public function index()
     {
-        // Categoria::get();
+        $categorias = Categoria::get();
+
+        return response()->json($categorias, 200);
     }
 
     /**
@@ -25,7 +28,17 @@ class CategoriaController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        // validar
+        $request->validate([
+            "nombre" =>"required|min:2|max:30"
+        ]);
+        // guardar
+        $cat = new Categoria();
+        $cat->categoria = $request->nombre;
+        $cat->detalle = $request->detalle;
+        $cat->save();
+        // reponder
+        return response()->json(["mensaje" => "Categoria Regitrada"], 201);
     }
 
     /**
@@ -36,7 +49,9 @@ class CategoriaController extends Controller
      */
     public function show($id)
     {
-        //
+        $categoria = Categoria::find($id);
+
+        return response()->json($categoria, 200);
     }
 
     /**
@@ -48,7 +63,17 @@ class CategoriaController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        // validar
+        $request->validate([
+            "nombre" =>"required|min:2|max:30"
+        ]);
+        // guardar
+        $cat = Categoria::find($id);
+        $cat->categoria = $request->nombre;
+        $cat->detalle = $request->detalle;
+        $cat->update();
+        // reponder
+        return response()->json(["mensaje" => "Categoria Actualizada"], 201);
     }
 
     /**
@@ -59,6 +84,9 @@ class CategoriaController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $cat = Categoria::find($id);
+        $cat->delete();
+
+        return response()->json(["mensaje" => "Categoria Eliminada"], 200);
     }
 }
