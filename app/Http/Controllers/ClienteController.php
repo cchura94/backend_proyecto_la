@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Cliente;
 use Illuminate\Http\Request;
 
 class ClienteController extends Controller
@@ -11,9 +12,17 @@ class ClienteController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        $buscar = $request->q;
+        if($buscar){
+            $clientes = Cliente::where('nombre_completo', 'like', '%'.$buscar.'%')->first();
+
+        }else{
+            $clientes = Cliente::get();
+        }
+
+        return response()->json($clientes, 200);
     }
 
     /**
@@ -24,7 +33,13 @@ class ClienteController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $clie = new Cliente();
+        $clie->nombre_completo = $request->nombre_completo;
+        $clie->ci_nit = $request->ci_nit;
+        $clie->telefono = $request->telefono;
+        $clie->save();
+
+        return response()->json(["mensaje" => "Cliente registrado", "cliente" => $clie]);
     }
 
     /**
