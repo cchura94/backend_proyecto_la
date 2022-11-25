@@ -29,6 +29,8 @@ Route::group(["prefix" => "v1/auth"], function(){
 
 Route::post("producto/{id}/subir-imagen", [ProductoController::class, "subirImagen"]);
 
+Route::get("/pedido/{id}/pdf", [PedidoController::class, "generarPDF"]);
+
 Route::group(["middleware" => "auth:sanctum"], function(){
     Route::apiResource("categoria", CategoriaController::class);
     Route::apiResource("usuario", UsuarioController::class);

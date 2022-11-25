@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Pedido;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class PedidoController extends Controller
 {
@@ -106,5 +107,16 @@ class PedidoController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function generarPDF($id)
+    {
+
+        $pedido = Pedido::with('cliente', 'productos')->find($id);
+
+        
+    $pdf = Pdf::loadView('pdfs.pedido', compact("pedido"));
+    return $pdf->stream('pedido.pdf');
+
     }
 }

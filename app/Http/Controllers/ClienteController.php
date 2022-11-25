@@ -16,7 +16,9 @@ class ClienteController extends Controller
     {
         $buscar = $request->q;
         if($buscar){
-            $clientes = Cliente::where('nombre_completo', 'like', '%'.$buscar.'%')->first();
+            $clientes = Cliente::where('nombre_completo', 'like', '%'.$buscar.'%')
+                                ->orWhere("ci_nit", 'like', '%'.$buscar.'%')
+                                ->first();
 
         }else{
             $clientes = Cliente::get();
